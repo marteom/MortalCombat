@@ -63,12 +63,21 @@ function changeHP(player){
   const playerLife = document.querySelector(`.player${player.player} .life`);
   player.hp -= random(20);
 
-  playerLife.style.width = player.hp <= 0 ? playerLife.style.width = '0%' : player.hp + '%';
+  if(player.hp <= 0){
+    player.hp = 0;
+  }
+
+  playerLife.style.width = player.hp + '%';
 }
 
 function playerWin(name){
   const winTitle = createElement('div', 'loseTitle');
-  winTitle.innerText = name + ' win';
+  if(name){
+    winTitle.innerText = name + ' win';
+  }
+  else{
+    winTitle.innerText = 'draw';
+  }
   return winTitle;
 }
 
@@ -77,16 +86,19 @@ arenas.appendChild(createPlayer(player2));
 
 randomButton.addEventListener('click', function(){
   changeHP(player1);
-  if(player1.hp < 0){
-    arenas.appendChild(playerWin(player2.name));
+  changeHP(player2);
+
+  if(player1.hp === 0 || player2.hp === 0){
     this.disabled = true;
-    return;
   }
 
-  changeHP(player2);
-  if(player2.hp < 0){
+  if(player1.hp === 0 && player1.hp < player2.hp){
+    arenas.appendChild(playerWin(player2.name));
+  }
+  else if(player2.hp === 0 && player2.hp < player1.hp){
     arenas.appendChild(playerWin(player1.name));
-    this.disabled = true;
-    return;
+  }
+  else if(player1.hp === 0 && player2.hp === 0){
+    arenas.appendChild(playerWin());
   }
 })
