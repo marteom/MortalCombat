@@ -9,7 +9,10 @@ const player1 = {
     weapon: ['nuntyaku', 'sword', 'knife'],
     attack: function(){
         console.log(this.name + ' Fight...');
-    }
+    },
+    changeHP: changeHP,
+    elHP: elHP,
+    renderHP: renderHP,
 }
 
 const player2 = {
@@ -20,7 +23,10 @@ const player2 = {
     weapon: ['katana', 'gun', 'hatchet'],
     attack: function(){
         console.log(this.name + ' Fight...');
-    }
+    },
+    changeHP: changeHP,
+    elHP: elHP,
+    renderHP: renderHP,
 }
 
 function createElement(tag, className){
@@ -55,19 +61,26 @@ function createPlayer(playerObj){
     return player;
 }
 
-function random(num){
+function getRandom(num){
   return Math.ceil(Math.random() * num);
 }
 
-function changeHP(player){
-  const playerLife = document.querySelector(`.player${player.player} .life`);
-  player.hp -= random(20);
-
-  if(player.hp <= 0){
-    player.hp = 0;
+function changeHP(damage){
+  if(damage >= this.hp){
+    this.hp = 0;
   }
+  else{
+    this.hp -= damage;
+  }
+}
 
-  playerLife.style.width = player.hp + '%';
+function elHP(){
+    return document.querySelector(`.player${this.player} .life`);
+}
+
+function renderHP(){
+  const playerLife = this.elHP();
+  playerLife.style.width = this.hp + '%';
 }
 
 function playerWin(name){
@@ -85,8 +98,11 @@ arenas.appendChild(createPlayer(player1));
 arenas.appendChild(createPlayer(player2));
 
 randomButton.addEventListener('click', function(){
-  changeHP(player1);
-  changeHP(player2);
+  player1.changeHP(getRandom(20));
+  player1.renderHP();
+
+  player2.changeHP(getRandom(20));
+  player2.renderHP();
 
   if(player1.hp === 0 || player2.hp === 0){
     this.disabled = true;
