@@ -94,6 +94,20 @@ function playerWin(name){
   return winTitle;
 }
 
+function createReloadButton(){
+    const reloadDiv = createElement('div', 'reloadWrap');
+    const reloadButton = createElement('button', 'button');
+    reloadButton.innerText = 'Restart';
+
+    reloadButton.addEventListener('click', function(){
+        window.location.reload();
+    })
+
+    reloadDiv.appendChild(reloadButton);
+
+    return reloadDiv;
+}
+
 arenas.appendChild(createPlayer(player1));
 arenas.appendChild(createPlayer(player2));
 
@@ -106,6 +120,7 @@ randomButton.addEventListener('click', function(){
 
   if(player1.hp === 0 || player2.hp === 0){
     this.disabled = true;
+    arenas.appendChild(createReloadButton());
   }
 
   if(player1.hp === 0 && player1.hp < player2.hp){
