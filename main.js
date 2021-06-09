@@ -10,9 +10,9 @@ const player1 = {
     attack: function(){
         console.log(this.name + ' Fight...');
     },
-    changeHP: changeHP,
-    elHP: elHP,
-    renderHP: renderHP,
+    changeHP,
+    elHP,
+    renderHP,
 }
 
 const player2 = {
@@ -24,9 +24,9 @@ const player2 = {
     attack: function(){
         console.log(this.name + ' Fight...');
     },
-    changeHP: changeHP,
-    elHP: elHP,
-    renderHP: renderHP,
+    changeHP,
+    elHP,
+    renderHP,
 }
 
 function createElement(tag, className){
