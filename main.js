@@ -1,5 +1,14 @@
 const arenas = document.querySelector('.arenas');
-const randomButton = document.querySelector('.button');
+const formControl = document.querySelector('.control');
+const fightButton = document.querySelector('.button');
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+
+const ATTACK = ['head', 'body', 'foot'];
 
 const player1 = {
     player: 1,
@@ -108,18 +117,57 @@ function createReloadButton(){
     return reloadDiv;
 }
 
+function enemyAttack(){
+  const hit = ATTACK[getRandom(3) -1];
+  const defence = ATTACK[getRandom(3) -1];
+
+  return {
+    hit,
+    defence,
+    value: getRandom(HIT[hit]),
+  }
+}
+
 arenas.appendChild(createPlayer(player1));
 arenas.appendChild(createPlayer(player2));
 
-randomButton.addEventListener('click', function(){
-  player1.changeHP(getRandom(20));
-  player1.renderHP();
+formControl.addEventListener("submit", function(evt){
+  evt.preventDefault();
 
-  player2.changeHP(getRandom(20));
-  player2.renderHP();
+  const enemy = enemyAttack();  
+  const attack = {};
+
+  for(let element of this){
+    if(element.name === 'hit' && element.checked){
+      attack.value = getRandom(HIT[element.value]);
+      attack.hit = element.value;
+    }
+
+    if(element.name === 'defence' && element.checked){
+      attack.defence = element.value;
+    }
+
+    element.checked = false;
+  }
+
+  executeKicks(enemy, attack);
+});
+
+function displayedDamage(player, damage){
+  player.changeHP(damage);
+  player.renderHP();
+}
+
+function executeKicks(enemy, attack){
+  if(enemy.hit !== attack.defence){
+    displayedDamage(player2, enemy.value);
+  }
+  if(attack.hit !== enemy.defence){
+    displayedDamage(player1, attack.value);
+  }
 
   if(player1.hp === 0 || player2.hp === 0){
-    this.disabled = true;
+    fightButton.disabled = true;
     arenas.appendChild(createReloadButton());
   }
 
@@ -132,4 +180,5 @@ randomButton.addEventListener('click', function(){
   else if(player1.hp === 0 && player2.hp === 0){
     arenas.appendChild(playerWin());
   }
-})
+
+}
