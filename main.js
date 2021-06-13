@@ -128,16 +128,9 @@ function enemyAttack(){
   }
 }
 
-arenas.appendChild(createPlayer(player1));
-arenas.appendChild(createPlayer(player2));
-
-formControl.addEventListener("submit", function(evt){
-  evt.preventDefault();
-
-  const enemy = enemyAttack();  
+function playerAttack(){
   const attack = {};
-
-  for(let element of this){
+  for(let element of formControl){
     if(element.name === 'hit' && element.checked){
       attack.value = getRandom(HIT[element.value]);
       attack.hit = element.value;
@@ -149,6 +142,17 @@ formControl.addEventListener("submit", function(evt){
 
     element.checked = false;
   }
+  return attack;
+}
+
+arenas.appendChild(createPlayer(player1));
+arenas.appendChild(createPlayer(player2));
+
+formControl.addEventListener("submit", function(evt){
+  evt.preventDefault();
+
+  const enemy = enemyAttack();  
+  const attack = playerAttack();
 
   executeKicks(enemy, attack);
 });
@@ -158,14 +162,7 @@ function displayedDamage(player, damage){
   player.renderHP();
 }
 
-function executeKicks(enemy, attack){
-  if(enemy.hit !== attack.defence){
-    displayedDamage(player2, enemy.value);
-  }
-  if(attack.hit !== enemy.defence){
-    displayedDamage(player1, attack.value);
-  }
-
+function showResult(){
   if(player1.hp === 0 || player2.hp === 0){
     fightButton.disabled = true;
     arenas.appendChild(createReloadButton());
@@ -180,5 +177,15 @@ function executeKicks(enemy, attack){
   else if(player1.hp === 0 && player2.hp === 0){
     arenas.appendChild(playerWin());
   }
+}
 
+function executeKicks(enemy, attack){
+  if(enemy.hit !== attack.defence){
+    displayedDamage(player2, enemy.value);
+  }
+  if(attack.hit !== enemy.defence){
+    displayedDamage(player1, attack.value);
+  }
+
+  showResult();
 }
