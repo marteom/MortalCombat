@@ -59,17 +59,19 @@ function generateLogs(type, player1, player2, damageText){
       text = logs[type].replace('[time]', startTime).replace('[player1]', player1.name).replace('[player2]', player2.name);
       break;
     case 'end':
-      text = logs[type][getRandom(3) - 1].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
+      text = logs[type][logs[type].length - 1].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
       break;
     case 'hit':
-      text = logs[type][getRandom(18) - 1].replace('[playerDefence]', player2.name).replace('[playerKick]', player1.name);
+      text = logs[type][logs[type].length - 1].replace('[playerDefence]', player2.name).replace('[playerKick]', player1.name);
       break;
     case 'defence':
-      text = logs[type][getRandom(8) - 1].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name);
+      text = logs[type][logs[type].length - 1].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name);
       break;
     case 'draw':
       text = logs[type];
       break;
+    default:
+      return;
   }
 
   if(damageText){
@@ -190,8 +192,8 @@ function createReloadButton(){
 }
 
 function enemyAttack(){
-  const hit = ATTACK[getRandom(3) -1];
-  const defence = ATTACK[getRandom(3) -1];
+  const hit = ATTACK[getRandom(ATTACK.length) -1];
+  const defence = ATTACK[getRandom(ATTACK.length) -1];
 
   return {
     hit,
