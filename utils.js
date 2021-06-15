@@ -1,6 +1,14 @@
-import { HIT, logs, ATTACK } from './const.js';
+import { logs } from './const.js';
 import {player1, player2} from './players.js';
 import { arenas, formControl, fightButton,chat } from './htmlElements.js';
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+
+const ATTACK = ['head', 'body', 'foot'];
 
 export const createElement = (tag, className) => {
     const newTag = document.createElement(tag);
