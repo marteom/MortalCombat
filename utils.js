@@ -1,5 +1,4 @@
 import { logs } from './const.js';
-import {player1, player2} from './players.js';
 import { arenas, formControl, fightButton,chat } from './htmlElements.js';
 
 const HIT = {
@@ -19,24 +18,6 @@ export const createElement = (tag, className) => {
   }
 
   const getRandom = (num) => Math.ceil(Math.random() * num);
-
-  export function changeHP(damage){
-    if(damage >= this.hp){
-      this.hp = 0;
-    }
-    else{
-      this.hp -= damage;
-    }
-  }
-  
-  export function elHP(){
-      return document.querySelector(`.player${this.player} .life`);
-  }
-  
-  export function renderHP(){
-    const playerLife = this.elHP();
-    playerLife.style.width = this.hp + '%';
-  }
 
   const playerWin = (name) =>{
     const winTitle = createElement('div', 'loseTitle');
@@ -96,7 +77,7 @@ export const enemyAttack = () => {
     player.renderHP();
   }
   
-  const showResult = () => {
+  const showResult = (player1, player2) => {
     if(player1.hp === 0 || player2.hp === 0){
       fightButton.disabled = true;
       arenas.appendChild(createReloadButton());
@@ -116,7 +97,7 @@ export const enemyAttack = () => {
     }
   }
 
-  export const executeKicks = (enemy, attack) => {
+  export const executeKicks = (enemy, attack, player1, player2) => {
     if(enemy.hit !== attack.defence){
       displayedDamage(player2, enemy.value);
       generateLogs('hit', player1, player2, ` [-${enemy.value}] [${player2.hp}/100]`);
@@ -133,7 +114,7 @@ export const enemyAttack = () => {
       generateLogs('defence', player2, player2);
     }
   
-    showResult();
+    showResult(player1, player2);
   }
 
   export const generateLogs = (type, player1, player2, damageText) => {
