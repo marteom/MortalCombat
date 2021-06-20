@@ -17,7 +17,7 @@ export const createElement = (tag, className) => {
     return newTag;
   }
 
-  const getRandom = (num) => Math.ceil(Math.random() * num);
+  export const getRandom = (num) => Math.ceil(Math.random() * num);
 
   const playerWin = (name) =>{
     const winTitle = createElement('div', 'loseTitle');
@@ -36,7 +36,7 @@ export const createElement = (tag, className) => {
     reloadButton.innerText = 'Restart';
 
     reloadButton.addEventListener('click', function(){
-        window.location.reload();
+      window.location.pathname = 'index.html';
     })
 
     reloadDiv.appendChild(reloadButton);

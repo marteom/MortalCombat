@@ -1,40 +1,57 @@
 import Player from './player.js';
-import { generateLogs, enemyAttack, playerAttack, executeKicks } from './utils.js';
+import { generateLogs, enemyAttack, playerAttack, executeKicks, getRandom } from './utils.js';
 import { arenas, formControl } from './htmlElements.js';
+
+let player1;
+let player2;
 
 class Game {
 	constructor() {}
 
-	player1 = new Player({
-		player: 1,
-		name: 'Scorpion',
-		hp: 100,
-		img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
-		rootSelector: arenas,
-	});
+	// getPlayers = async () => {
+	// 	const body = await fetch('https://reactmarathon-api.herokuapp.com/api/mk/players').then(res => res.json());
+	// 	return body;
+	// } 
 
-	player2 = new Player({
-		player: 2,
-		name: 'Subzero',
-		hp: 100,
-		img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
-		rootSelector: arenas,
-	});
+	start = async () => {
+		//const players = await this.getPlayers();
+		const p1 = JSON.parse(localStorage.getItem('player1'));
+		const p2 = await fetch(
+			'https://reactmarathon-api.herokuapp.com/api/mk/player/choose'
+		).then((res) => res.json());
 
-	start = () => {
-		const enemyPlayer = this.player1;
-		const attackPlayer = this.player2;
-		enemyPlayer.createPlayer();
-		attackPlayer.createPlayer();
-		generateLogs('start', enemyPlayer, attackPlayer);
+		player1 = new Player({
+			...p1,
+			player: 1,
+			rootSelector: arenas,
+		});
 
-		formControl.addEventListener('submit', function (evt) {
+		player2 = new Player({
+			...p2,
+			player: 2,
+			rootSelector: arenas,
+		});
+
+		player1.createPlayer();
+		player2.createPlayer();
+
+		generateLogs('start', player1, player2);
+
+		formControl.addEventListener('submit', async function (evt) {
 			evt.preventDefault();
-
-			const enemy = enemyAttack();
 			const attack = playerAttack();
+			const fightObj = await fetch(
+				'http://reactmarathon-api.herokuapp.com/api/mk/player/fight',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						hit: attack.hit,
+						defence: attack.defence,
+					}),
+				}
+			).then((res) => res.json());
 
-			executeKicks(enemy, attack, enemyPlayer, attackPlayer);
+			executeKicks(fightObj.player1, fightObj.player2, player1, player2);
 		});
 	};
 }
