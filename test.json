@@ -1,14 +1,14 @@
 [
   {
-    "title": "PROMO15",
-    "price": 250
+    "title": "PROMO1",
+    "price": 0
   },
   {
-    "title": "PROMO10",
-    "price": 50
+    "title": "PROMO2",
+    "price": 1
   },
   {
-    "title": "PROMO5",
-    "price": 10
+    "title": "PROMO3",
+    "price": 2
   }
 ]
