@@ -1,1 +1,14 @@
-wwww
+[
+  {
+    "title": "PROMO15",
+    "price": 250
+  },
+  {
+    "title": "PROMO10",
+    "price": 50
+  },
+  {
+    "title": "PROMO5",
+    "price": 10
+  }
+]
